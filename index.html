@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <span v-once id="app">Message : {{msg}}</span>
+    <span id = "app1">Use re...{{rawHtml}}</span>
+    <span v-html="rawHtml" id="app2"></span>
+    <div id="app3" v-bind:id="dynamicId">123</div>
+    <button id="app4" v-bind:disabled="isButtonDisabled" type="button" style="background-color:blue">change color</button>
+    <span id="app5">{{ msg.split('').reverse().join('') }}</span>
+    <span id="app6" v-if="seen">now you see me couse i let be</span>
+    <a v-bind:href="url" id="app7">百度一下</a>
+    <button id="app8" style="background-color: red" v-on:click.prevent="changeColor">变色</button>
+    <script src="js/vue.js"></script>
+    <script>
+        // document.getElementById("app4").addEventListener('click',function (params) {
+        //     if(this.style.backgroundColor == "blue"){
+        //         this.style.backgroundColor = "red";
+        //     }else{
+        //         this.style.backgroundColor = "blue";
+        //     }
+        // })
+        var app = new Vue({
+            el:'#app',
+            data: { msg: 1 }
+        })
+        var app1 = new Vue({
+            el:'#app1',
+            data:{
+                rawHtml : '<span style="color:red">This text should be red!</span>'
+            }
+        })
+        var app2 = new Vue({
+            el:'#app2',
+            data:{
+                rawHtml : '<span style="color:red">This text should be red!</span>'
+            }
+        })
+        var app3 = new Vue({
+            el: '#app3',
+            data:{
+                dynamicId : 'a1'
+            }
+        })
+        var app4 = new Vue({
+            el: '#app4',
+            data:{
+                isButtonDisabled : true
+            },
+        })
+        var app5 = new Vue({
+            el: '#app5',
+            data:{
+                msg : 'asdfghjkl'
+            }
+        })
+        var app6 = new Vue({
+            el: '#app6',
+            data:{
+                seen : true 
+            }
+        })
+        var app7 = new Vue({
+            el: '#app7',
+            data:{
+                url : 'https://www.baidu.com'
+            }
+        })
+        var app8 = new Vue({
+            el: '#app8',
+            data:{
+                
+            },
+            methods:{
+                changeColor : function () {
+                   this.$el.style.backgroundColor == "blue"?this.$el.style.backgroundColor = "red" : this.$el.style.backgroundColor = "blue"
+                }
+                
+            }
+        })
+        var app9 = new Vue({
+            el: '#app9',
+            data:{
+                array: [3,4]
+            },
+            computed:{
+                Adds : {
+                    function (){
+                        let val = 0;
+                        for(let i=0;i<array.length;i++){
+                            val += array[i];
+                        }
+                        return val;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
