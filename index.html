@@ -16,6 +16,10 @@
     <span id="app6" v-if="seen">now you see me couse i let be</span>
     <a v-bind:href="url" id="app7">百度一下</a>
     <button id="app8" style="background-color: red" v-on:click.prevent="changeColor">变色</button>
+    <div id="app9">
+        <p>The Array is: "{{array}}"</p>
+        <p>and they addsNum is: "{{adds}}"</p>
+    </div>
     <script src="js/vue.js"></script>
     <script>
         // document.getElementById("app4").addEventListener('click',function (params) {
@@ -79,8 +83,7 @@
             methods:{
                 changeColor : function () {
                    this.$el.style.backgroundColor == "blue"?this.$el.style.backgroundColor = "red" : this.$el.style.backgroundColor = "blue"
-                }
-                
+                }                
             }
         })
         var app9 = new Vue({
@@ -89,16 +92,17 @@
                 array: [3,4]
             },
             computed:{
-                Adds : {
-                    function (){
-                        let val = 0;
-                        for(let i=0;i<array.length;i++){
-                            val += array[i];
+                adds :  function () {
+                            let val = 0;
+                            for(let i=0;i<this.array.length;i++){
+                                val += this.array[i];
+                            }
+                            return val;
                         }
-                        return val;
-                    }
-                }
             }
+        })
+        var app10 = new Vue({
+            
         })
     </script>
 </body>
