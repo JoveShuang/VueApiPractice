@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        span{
+            margin-right: 1rem
+        }
+    </style>
 </head>
 <body>
     <span v-once id="app">Message : {{msg}}</span>
@@ -15,12 +20,57 @@
     <span id="app5">{{ msg.split('').reverse().join('') }}</span>
     <span id="app6" v-if="seen">now you see me couse i let be</span>
     <a v-bind:href="url" id="app7">百度一下</a>
-    <button id="app8" style="background-color: red" v-on:click.prevent="changeColor">变色</button>
+    <button id="app8" style="background-color: red" v-on:click.prevent="changeColor()">变色</button>
     <div id="app9">
         <p>The Array is: "{{array}}"</p>
         <p>and they addsNum is: "{{adds}}"</p>
     </div>
+    <span id="app10">{{fullName}}</span>
+    <span id="app11">{{fullName}}</span>
+    <span id="app12">{{fullName}}</span>
+    <div id="watch-example">
+        <p>
+            Ask a yes/no question:
+            <input type="text" v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+        <img v-bind:src="img" alt="">
+    </div>
+    <div id="ClassAndStyle">
+        <span v-bind:class="{active: isActive}">active</span>
+        <span class="first" v-bind:class="{'text-danger' : hasError}">text-danger</span>
+        <span class="second" v-bind:class="classObject">classObject</span>
+        <span v-bind:class="classObj">classObj</span>
+        <span v-bind:class="[activeClass,errorClass]">Active&Error</span>
+        <span v-bind:class="[isActive?activeClass:'',errorClass]">isActive?</span>
+        <span v-bind:class="[{ active: isActive }, errorClass]">active</span>
+        <span v-bind:style="{color:rainbow,fontSize:bigSize + 'px'}">I'm rainbow</span>
+        <span v-bind:style="styleObj"> little color</span>
+        <p v-bind:style="[styleArr1,styleArr2]">let's see something awesome!</p>
+        <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">What's happend?</div>
+    </div>
+    <div id="condition">
+        <span v-if="isTrue">isTrue</span>
+        <span v-else>isNotTrue</span>
+        <template v-if="isTemplate">
+            <header>
+                 <!-- v-bind:style="{border:'3px solid #000',borderRadius:'5px',background-color:'#0ff',color:'#666'}" -->
+                <nav>
+                    <ul>
+                        <li>number1</li>
+                        <li>number2</li>
+                        <li>number3</li>
+                    </ul>
+                </nav>
+            </header>
+        </template>
+    </div>
+
+
+
     <script src="js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
     <script>
         // document.getElementById("app4").addEventListener('click',function (params) {
         //     if(this.style.backgroundColor == "blue"){
@@ -93,16 +143,140 @@
             },
             computed:{
                 adds :  function () {
-                            let val = 0;
-                            for(let i=0;i<this.array.length;i++){
-                                val += this.array[i];
-                            }
-                            return val;
-                        }
+                    let val = 0;
+                    for(let i=0;i<this.array.length;i++){
+                        val += this.array[i];
+                    }
+                    return val;
+                }
             }
         })
         var app10 = new Vue({
-            
+            el: '#app10',
+            data:{
+                firstName: 'David',
+                lastName: 'Beckham',
+                fullName: 'David Beckham'
+            },
+            watch:{
+                firstName : function (val){
+                    this.fullName = val + '' + this.lastName;
+                },
+                lastName : function (val){
+                    this.fullName = this.firstName + '' + val;
+                }
+            }
+        })
+        var app11 = new Vue({
+            el: '#app11',
+            data:{
+                firstName:'Taylor ',
+                lastName: 'Swift'
+            },
+            computed:{
+                fullName: function (){
+                    return this.firstName + '' + this.lastName;
+                }
+            }
+        })
+        var app12 = new Vue({
+            el: '#app12',
+            data:{
+                firstName: 'Jay ',
+                lastName: 'Chou'
+            },
+            computed:{
+                fullName: {
+                    get: function () {
+                        return this.firstName + '' + this.lastName;
+                    },
+                    set: function (newValue) {
+                        var names = newValue.split(' ');
+                        this.firstName = names[0];
+                        this.lastName = names[names.length-1];
+                    }
+                }
+                
+            }
+        })
+        var watchExampleVM = new Vue({
+            el: "#watch-example",
+            data:{
+                question:'',
+                answer: 'I cannot give you an answer until you ask a question!',
+                img: ''
+            },
+            watch:{
+                question: function (newQuestion,oldQuestion) {
+                    this.answer = "Waiting for you to stop typing...";
+                    this.debouncedGetAnswer()
+                }
+            },
+            created: function (){
+                this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+            },
+            methods: {
+                getAnswer: function(){
+                    if(this.question.indexOf('?') === -1){
+                        this.answer = 'Questions usually contain a question mark. ;-)';
+                        return;
+                    }
+                    this.answer = 'Thinking...';
+                    var vm = this;
+                    axios.get('https://yesno.wtf/api')
+                        .then(function (response){
+                            vm.answer = _.capitalize(response.data.answer);
+                            vm.img = response.data.image;
+                        })
+                        .catch(function (error){
+                            vm.answer = 'Error! Could not reach the API. ' + error;
+                        })
+                }
+            }
+        })
+        var ClassAndStyle = new Vue({
+            el:"#ClassAndStyle",
+            data: {
+                isActive : true,
+                hasError : true,
+                error : null,
+                activeClass : 'active',
+                errorClass : 'text-error',
+                rainbow : '#3234ab',
+                bigSize: 28,
+                classObject: {
+                    classObj1: false,
+                    'classObj2': true
+                },
+                styleObj: {
+                    color: '#1f5a90',
+                    background: '#ff0'
+                },
+                styleArr1 : {
+                    fontSize : '30px',
+                    backgroundColor: '#0ff'
+                },
+                styleArr2 : {
+                    border : '3px solid #000',
+                    borderRadius: '5px'
+                }
+            },
+            computed:{
+                classObj : function (){
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
+                    }
+                }
+            }
+        })
+        var condition = new Vue({
+            el:"#condition",
+            data:{
+                isTrue: true,
+                isTemplate: true
+            }
+
         })
     </script>
 </body>
