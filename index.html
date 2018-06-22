@@ -64,7 +64,31 @@
                 </nav>
             </header>
         </template>
+        <span v-if="typeA === 'A'">typeA</span>
+        <span v-else-if="typeB === 'B'">typeB</span>
+        <span v-else-if="typeC === 'C'">typeC</span>
+        <span v-else>NOT ABC</span>
+        <template v-if="loginType === 'username'">
+            <label for="">Username</label>
+            <input type="text" placeholder="Enter you username">
+        </template>
+        <template v-else>
+            <label for="">email</label>
+            <input type="text" placeholder="Enter you email address">
+        </template>
+        <button v-on:click="changeLogin()">Toggle login type</button>
+        <template v-if="loginType === 'username'">
+            <label for="">Username</label>
+            <input type="text" placeholder="Enter you username" key="username-input">
+        </template>
+        <template v-else>
+            <label for="">email</label>
+            <input type="text" placeholder="Enter you email address" key="email-input">
+        </template>
     </div>
+    <div id="showHide">
+        <span v-show="isShow">isShow</span>
+    </div>    
 
 
 
@@ -274,9 +298,23 @@
             el:"#condition",
             data:{
                 isTrue: true,
-                isTemplate: true
+                isTemplate: true,
+                typeA : 'AA',
+                typeB : 'BB',
+                typeC : 'C',
+                loginType : 'username'
+            },
+            methods:{
+                changeLogin : function (){
+                    this.loginType === 'username' ? this.loginType = 'email' : this.loginType = 'username';
+                }
             }
-
+        })
+        var showHide = new Vue({
+            el:"#showHide",
+            data:{
+                isShow :  true
+            }
         })
     </script>
 </body>
