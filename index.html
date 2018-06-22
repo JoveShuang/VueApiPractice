@@ -9,6 +9,10 @@
         span{
             margin-right: 1rem
         }
+        ul li {
+            /* display: inline-block; */
+            /* list-style-type: none */
+        }
     </style>
 </head>
 <body>
@@ -89,6 +93,15 @@
     <div id="showHide">
         <span v-show="isShow">isShow</span>
     </div>    
+    <ul id="exampleFor">
+        <li v-for="item in items">{{item.message}}</li>
+        <li v-for="(item,index) in items">{{parentMessage}} - {{index}} - {{item.message}}</li>
+        <li v-for="item of items">{{item.message}}</li>
+        <li v-for="value in object">{{value}}</li>
+        <div v-for="(value,key) in object">{{key}} : {{value}}</div>
+        <div v-for="(value,key,index) in object">{{index}} . {{key}} : {{value}}</div>
+        <!-- <div v-for="item in items" :key="item.id">{{item.message}}</div> -->
+    </ul>
 
 
 
@@ -314,6 +327,22 @@
             el:"#showHide",
             data:{
                 isShow :  true
+            }
+        })
+        var exampleFor = new Vue({
+            el:"#exampleFor",
+            data:{
+                parentMessage : 'Parent',
+                items:[
+                    {message : "first"},
+                    {message : "second"},
+                    // {id : 'vFor'}
+                ],
+                object:{
+                    firstName: 'David',
+                    lastName : 'Beckham',
+                    age : 37
+                }
             }
         })
     </script>
