@@ -100,9 +100,14 @@
         <li v-for="value in object">{{value}}</li>
         <div v-for="(value,key) in object">{{key}} : {{value}}</div>
         <div v-for="(value,key,index) in object">{{index}} . {{key}} : {{value}}</div>
-        <!-- <div v-for="item in items" :key="item.id">{{item.message}}</div> -->
+        <div v-for="item in items" :key="item.id">{{item.message}}</div>
     </ul>
-
+    <div id="arrExample">
+        <span >{{items}}</span>
+    </div>
+    <div id="objExample">
+        <span>{{useProfile}}</span>
+    </div>
 
 
     <script src="js/vue.js"></script>
@@ -342,6 +347,20 @@
                     firstName: 'David',
                     lastName : 'Beckham',
                     age : 37
+                }
+            }
+        })
+        var arrExample = new Vue({
+            el:"#arrExample",
+            data: {
+                items : ['a','b','c']
+            }
+        })
+        var objExample = new Vue({
+            el:"#objExample",
+            data: {
+                useProfile:{
+                    name : 'Jove'
                 }
             }
         })
