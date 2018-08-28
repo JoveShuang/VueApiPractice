@@ -156,6 +156,157 @@
             ></li>
         </ul>
     </div>
+    <div id="event1">
+        <button v-on:click="counter += 1">Add 1</button>
+        <p>This button has been clicked {{counter}} times.</p>
+    </div>
+    <div id="event2">
+        <button v-on:click="greet">Greet</button>
+    </div>
+    <div id="event3">
+        <button v-on:click="say('hi')">Say hi</button>
+        <button v-on:click="say('what')">Say what</button>
+        <button v-on:click="warn('From cannot be submitted yet.',$event)">Submit</button>
+
+        <!-- 阻止单击事件继续传播 -->
+        <a v-on:click.stop="doThis"></a>
+
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="onSubmit"></form>
+
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="doThat"></a>
+
+        <!-- 只有修饰符 -->
+        <form v-on:submit.prevent></form>
+
+        <!-- 添加事件监听器时使用事件捕获模式 -->
+        <!-- 即元素自身触发的事件先在此处处理，然后才交由内部元素进行处理 -->
+        <div v-on:click.capture="doThis">...</div>
+
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <div v-on:click.self="doThat">...</div>
+
+        <!-- 点击事件将只会触发一次 -->
+        <a v-on:click.once="doThis"></a>
+
+        <!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+        <!-- 而不会等待 `onScroll` 完成  -->
+        <!-- 这其中包含 `event.preventDefault()` 的情况 -->
+        <div v-on:scroll.passive="onScroll">...</div>
+        <!-- 只有在 `keyCode` 是 13 时调用 `vm.submit()` -->
+        <input v-on:keyup.13="submit">
+        <!-- 同上 -->
+        <input v-on:keyup.enter="submit">
+        <!-- 缩写语法 -->
+        <input @keyup.enter="submit">
+        <img v-bind:src="img" alt="">
+        <!-- 阻止单击事件继续传播 -->
+        <a v-on:click.stop="doThis"></a>
+
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="onSubmit"></form>
+
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="doThat"></a>
+
+        <!-- 只有修饰符 -->
+        <form v-on:submit.prevent></form>
+
+        <!-- 添加事件监听器时使用事件捕获模式 -->
+        <!-- 即元素自身触发的事件先在此处理，然后才交由内部元素进行处理 -->
+        <div v-on:click.capture="doThis">...</div>
+
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <div v-on:click.self="doThat">...</div>
+
+        <!-- <input @keyup.page-down="onPageDown"> -->
+
+        <!-- Alt + C -->
+        <input @keyup.alt.67="AC">
+
+        <!-- Ctrl + Click -->
+        <div @click.ctrl="CC">Do something</div>
+
+        <!-- 有且只有 Ctrl 被按下的时候才触发 -->
+        <button @click.ctrl.exact="onCtrlClick">A</button>
+
+        <!-- 没有任何系统修饰符被按下的时候才触发 -->
+        <button @click.exact="onClick">A</button>
+    </div>
+
+    <!--  -->
+    <div id="form">
+        <input v-model="message" placeholder="edit me">
+        <p>Message is: {{ message }}</p>
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line;">{{ message }}</p>
+        <br>
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+    </div>
+    <div id='example-3'>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+    </div>
+    <div id="example-4">
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+    </div>
+    <div id="example-5">
+        <select v-model="selected">
+            <option disabled value="">Select please </option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+    </div>
+    <div id="example-6">
+        <select v-model="selected" multiple style="width: 50px;">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <br>
+        <span>Selected: {{ selected }}</span>
+    </div>
+    <div id="example-7">
+        <select v-model="selected">
+            <option v-for="option in options" v-bind:value="option.value">
+                {{ option.text }}
+            </option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+    </div>
+
+    <!-- 当选中时，`picked` 为字符串 "a" -->
+    <!-- <input type="radio" v-model="picked" value="a"> -->
+
+    <!-- `toggle` 为 true 或 false -->
+    <!-- <input type="checkbox" v-model="toggle"> -->
+
+    <!-- 当选中第一个选项时，`selected` 为字符串 "abc" -->
+    <select name="" id="" v-model="selected">
+        <option value="abc">ABC</option>
+    </select>
+
+    <!-- <input type="checkbox" v-model="toggle" true-value="yes" false-value="no"> -->
+    
 
     <script src="js/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
@@ -476,6 +627,159 @@
                 this.newTodoText = ''
                 }
             }
+        })
+        var event1 = new Vue({
+            el:"#event1",
+            data:{
+                counter : 0
+            }
+        })
+        var event2 = new Vue({
+            el:"#event2",
+            data:{
+                name:'Vue.js'
+            },
+            methods:{
+                greet:function (event){
+                    alert("Hello " + this.name + " !");
+                    if(event){
+                        alert(event.target.tagName)
+                    }
+                }
+            }
+        })
+        var event3 = new Vue({
+            el:"#event3",
+            data:{
+                img:''
+            },
+            methods:{
+                say: function (msg){
+                    alert(msg);
+                },
+                warn: function (message,event){
+                    if(event) event.preventDefault();
+                    alert(message);
+                },
+                submit: function (){
+                    var vm = this;
+                    axios.get('https://yesno.wtf/api')
+                    .then(function (response) {
+                        vm.img = response.data.image;
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    })
+                },
+                AC: function() {
+                    alert("You press the ALT & C button!");
+                },
+                CC: function (){
+                    alert("You press the CTRL button and click your mouse left button!");
+                },
+                onCtrlClick:function (){
+                    alert("Only press the CTRL and click your mouse left button can trige this alert!");
+                },
+                onClick:function (){
+                    alert("Only press your mouse left button without any keyborad's button!");
+                }
+            }
+        })
+        
+        /*全部的按键别名：
+            .enter
+            .tab
+            .delete (捕获“删除”和“退格”键)
+            .esc
+            .space
+            .up
+            .down
+            .left
+            .right
+        */
+        // 可以使用 `v-on:keyup.f1`
+        
+        Vue.config.keyCodes.f1 = 112;
+        
+        //$event.key === 'PageDown';
+        
+        /*系统修饰键
+            .ctrl
+            .alt
+            .shift
+            .meta
+        */
+        
+        /*鼠标按钮修饰符
+            .left
+            .right
+            .middle
+        */
+
+        //表单的输入与绑定
+        var form = new Vue({
+            el:"#form",
+            data:{
+                message:'',
+                checked:false
+            },
+            watch:{
+                message:function (val){
+                    this.message = val;
+                }
+            },
+            methods:{
+                
+            }
+        })
+        
+        new Vue({
+            el: '#example-3',
+            data: {
+                checkedNames : []
+            }
+        })
+
+        new Vue({
+            el: '#example-4',
+            data:{
+                picked:''
+            }
+        })
+
+        new Vue({
+            el: '#example-5',
+            data:{
+                selected:''
+            }
+        })
+
+        new Vue({
+            el: '#example-6',
+            data:{
+                selected:[],
+            }
+        })
+        
+        new Vue({
+            el: '#example-7',
+            data:{
+                selected: 'A',
+                options: [
+                    { text: 'One', value: 'A' },
+                    { text: 'Two', value: 'B' },
+                    { text: 'Three', value: 'C' }
+                ]
+            }
+            // methods:{
+            //     toggle:function(){
+            //         var vm = this;
+            //         // 当选中时
+            //         vm.toggle === 'yes';
+            //         // 当没有选中时
+            //         vm.toggle === 'no';
+            //     }
+            // }
         })
     </script>
 </body>
