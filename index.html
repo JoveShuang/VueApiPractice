@@ -13,6 +13,45 @@
             /* display: inline-block; */
             /* list-style-type: none */
         }
+        #demo,.demo,.content .demo{
+            border: 1px solid #eee;
+            border-radius: 2px;
+            padding: 25px 35px;
+            margin-top: 1em;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+            line-height: 1.5em;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow-x: auto;
+        }
+        .demo-alert-box{
+            padding:10px 20px;
+            background:#f3beb8;
+            border:1px solid #f09898
+        }
+        .tab-button {
+            padding: 6px 10px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background: #f0f0f0;
+            margin-bottom: -1px;
+            margin-right: -1px;
+        }
+        .tab-button:hover {
+            background: #e0e0e0;
+        }
+        .tab-button.active {
+            background: #e0e0e0;
+        }
+        .tab {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -307,9 +346,76 @@
 
     <!-- <input type="checkbox" v-model="toggle" true-value="yes" false-value="no"> -->
     
+    <!-- 在“change”时而非“input”时更新 -->
+    <input v-model.lazy="msg">
 
+    <!-- 组件基础 -->
+    <div id="components-demo">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+    </div>
+
+    <!-- 组建注册 -->
+    <div id="components">
+        <component-a></component-a>
+        <component-b></component-b>
+        <component-c></component-c>
+        <component-aa></component-aa>
+        <component-bb></component-bb>
+
+    </div>
+
+    <!-- <div id="blog-post-demo">
+        <blog-post title="My journey with Vue"></blog-post>
+        <blog-post title="Blogging with Vue"></blog-post>
+        <blog-post title="Why Vue is so fun"></blog-post>
+        <blog-post v-for="post in posts" v-bind:key:="post.id" v-bind:title="post.title"></blog-post>
+    </div> -->
+
+    <div id="blog-posts-events-demo">
+        <div :style="{ fontSize : postFontSize + 'em'}">
+            <blog-post
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+                v-on:enlarge-text="postFontSize += $event"
+                v-on:enlarge-text1="onEnlargeText"
+            ></blog-post>
+        </div>
+    </div>
+
+    <!-- 在组件上使用v-model -->
+    <!-- <custom-input
+        v-bind:value="searchText"
+        v-on:input="searchText = $event"
+    ></custom-input> -->
+    <custom-input v-model="searchText"></custom-input>
+    
+    <!-- 通过插槽分发内容 -->
+    <div id="slots-demo" class="demo">
+        <alert-box>
+            Something bad happened.
+        </alert-box>
+    </div>
+
+    <!-- 动态组件 -->
+    <div id="dynamic-component-demo" class="demo">
+        <button
+            v-for="tab in tabs"
+            v-bind:key="tab"
+            v-bind:class="['tab-button',{
+        active:currentTab === tab}]"
+            v-on:click="currentTab = tab"
+        >{{ tab }}</button>
+        <component
+            v-bind:is="currentTabComponent"
+            class="tab"
+        ></component>
+    </div>
+    
     <script src="js/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
     <script>
         // document.getElementById("app4").addEventListener('click',function (params) {
@@ -780,6 +886,212 @@
             //         vm.toggle === 'no';
             //     }
             // }
+        })
+
+        /*表单修饰符
+            .lazy
+            .number
+            .trim
+        */
+
+        /* 组件基础 */
+
+        Vue.component('button-counter',{
+            data: function () {
+                return {
+                    count : 0
+                }
+            },
+            template : '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+        })
+        new Vue({ el:'#components-demo' })
+
+
+        /* 组件注册 */
+
+        //全局
+        Vue.component('component-a',{
+            data:function () {
+                return{
+                    count : 10
+                }
+            },
+            template:`<div v-if="count>1">
+                        <button v-on:click="count--">Now the count is {{ count }} .</button>
+                    </div>
+                    <div v-else-if="count == 1">
+                        <button>Now the count is only{{ count }} .</button>
+                    </div>`
+        })
+        Vue.component('component-b', {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: `<div v-if="count == 0">
+                            <button v-on:click="count++">Don't press me.</button>
+                        </div>
+                        <div v-else-if="count == 1">
+                            <button v-on:click="count++">I said,DON'T press me again!</button>
+                        </div>
+                        <div v-else-if="count == 2">
+                            <button v-on:click="count++">Final time I warn YOU!</button>
+                        </div>
+                        <div v-else-if="count == 3">
+                            <h1 style="color:red">SURPRISE MOTHER FUCKER!</h1>
+                        </div>`
+        })
+        Vue.component('component-c', {
+            data: function () {
+                return {
+                    count: 10
+                }
+            },
+            template: `<div v-if="count>1 && count<20">
+                            <button v-on:click="count++">Now the count is {{ count }} .</button>
+                        </div>
+                        <div v-else-if="count == 20">
+                            <button>Now the count is enough.</button>
+                        </div>`
+        })
+
+        //局部
+        var ComponentA = {
+            data: function (){
+                return {
+                    count: 0
+                };
+            },
+            template: `<button v-on:click="count++">俺は無敵だ & {{ count }}</button>`
+        }
+        //局部注册组件在其子组件中使用
+        var ComponentB = {
+            components:{
+                'component-bb' : ComponentA
+            },
+            data: function (){
+                return {
+                    count: 0
+                };
+            },
+            template: `<button v-on:click="count++">{{ count }}</button>`
+        }
+        new Vue({
+            el: '#components',
+            components:{
+                'component-aa': ComponentA,
+                'component-bb': ComponentB
+            }
+        })
+
+        //通过 Prop 向子组件传递数据
+        // Vue.component('blog-post',{
+        //     props: ['title'],
+        //     template : '<h3>{{ title }}</h3>'
+        // })
+        // new Vue({
+        //     el: '#blog-post-demo',
+        //     data:{
+        //         posts:[
+        //             {id: 1,title: 'My journey with Vue'},
+        //             {id: 2,title: 'Blogging with Vue'},
+        //             {id: 3,title: 'Why Vue is so fun'}
+        //         ]
+        //     }
+        // })
+        
+        //单个根元素
+        // Vue.component('blog-post',{
+        //     props:['post'],
+        //     template:`
+        //         <div class="blog-post">
+        //             <h3>{{ post.title }}</h3>
+        //             <div v-html="post.content"></div>
+        //         </div>
+        //     `
+        // })
+        
+        Vue.component('blog-post',{
+            props:['post'],
+            template:`
+                <div class="blog-post">
+                    <h3>{{ post.title }}</h3>
+                    <button v-on:click="$emit('enlarge-text',0.1)">
+                        Enlarge text
+                    </button>
+                    <button v-on:click="$emit('enlarge-text1',0.1)">
+                        Enlarge text1
+                    </button>
+                    <div v-html="post.content"></div>
+                </div>
+            `
+        })
+        //通过事件向父级组件发送消息
+        new Vue({
+            el: '#blog-posts-events-demo',
+            data: {
+                posts: [
+                    {id: 1,title: 'My journey with Vue',content:'...content...'},
+                    {id: 2,title: 'Blogging with Vue',content:'...content...'},
+                    {id: 3,title: 'Why Vue is so fun',content:'...content...'},
+                ],
+                postFontSize: 1
+            },
+            methods: {
+                onEnlargeText: function (enlargeAmount){
+                    this.postFontSize += enlargeAmount;
+                }
+            }
+        })
+        
+        //在组件上使用v-model
+        Vue.component('custom-input',{
+            props:['value'],
+            template:`
+                <input 
+                    v-bind:value="value"
+                    v-on:input="$emit('input',$event.target.value)"
+                >
+            `
+        })
+
+        //通过插槽分发内容
+        Vue.component('alert-box',{
+            template:`
+                <div class="demo-alert-box">
+                    <strong>Error!</strong>
+                    <slot></slot>
+                </div>
+            `
+        })
+        new Vue({
+            el:'#slots-demo',
+            data:{}
+        })
+
+        //动态组件
+        Vue.component('tab-home',{
+            template:'<div>Home component</div>'
+        })
+        Vue.component('tab-posts',{
+            template:'<div>Posts component</div>'
+        })
+        Vue.component('tab-archive',{
+            template:'<div>Archive component</div>'
+        })
+
+        new Vue({
+            el:'#dynamic-component-demo',
+            data:{
+                currentTab:'Home',
+                tabs:['Home','Posts','Archive']
+            },
+            computed:{
+                currentTabComponent:function (){
+                    return 'tab-' + this.currentTab.toLowerCase()
+                }
+            }
         })
     </script>
 </body>
