@@ -59,7 +59,7 @@
     <span id = "app1">Use re...{{rawHtml}}</span>
     <span v-html="rawHtml" id="app2"></span>
     <div id="app3" v-bind:id="dynamicId">123</div>
-    <button id="app4" v-bind:disabled="isButtonDisabled" type="button" style="background-color:blue">change color</button>
+    <button id="app4" v-bind:disabled="isButtonDisabled" type="button" style="background-color:blue;animation: zoomIn 0.2s cubic-bezier(0, .25, .08, 1) 0.4s; animation-fill-mode: backwards">change color</button>
     <span id="app5">{{ msg.split('').reverse().join('') }}</span>
     <span id="app6" v-if="seen">now you see me couse i let be</span>
     <a v-bind:href="url" id="app7">百度一下</a>
@@ -414,6 +414,35 @@
         ></component>
     </div>
     <my-component propA="1" propB="1" propC="1" propD="1"></my-component>
+
+    <!-- 自定义事件 -->
+    <base-input v-on:focus.native="onFocus"></base-input>
+
+
+    <div id="imooc">
+        <div>
+            <input v-model="inputValue">
+            <button v-on:click="handleSubmit">提交</button>
+        </div>
+        <ul>
+            <todo-item
+                v-for="(item,index) of list"
+                v-bind:key="index"
+                v-bind:content="item"
+                v-bind:index="index"
+                v-on:delete="handleDelete"
+            >
+    
+            </todo-item>
+
+        </ul>
+
+        <navigation-link url="/profile">
+            Your Profile
+        </navigation-link>
+    </div>
+
+    
     <script src="js/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
@@ -1094,6 +1123,7 @@
             }
         })
         
+        //Prop验证
         Vue.component('my-component', {
             props: {
                 // 基础的类型检查 (`null` 匹配任何类型)
@@ -1127,8 +1157,104 @@
                 }
             }
         })
+        
+        /* 类型检查 
+            String
+            Number
+            Boolean
+            Array
+            Object
+            Date
+            Function
+            Symbol
+        */
+        
+        // function Person (firstName,lastName){
+        //     this.firstName = firstName;
+        //     this.lastName = lastName;
+        // }
+        
+        // Vue.component('blog-post',{
+        //     props:{
+        //         author:Person
+        //     }
+        // })
 
+        //自定义事件
 
+        Vue.component('base-input', {
+            inheritAttrs: false,
+            props: ['label', 'value'],
+            computed: {
+                inputListeners: function () {
+                var vm = this
+                // `Object.assign` 将所有的对象合并为一个新对象
+                return Object.assign({},
+                    // 我们从父级添加所有的监听器
+                    this.$listeners,
+                    // 然后我们添加自定义监听器，
+                    // 或覆写一些监听器的行为
+                    {
+                    // 这里确保组件配合 `v-model` 的工作
+                    input: function (event) {
+                        vm.$emit('input', event.target.value)
+                    }
+                    }
+                )
+                }
+            },
+            template: `
+                <label>
+                {{ label }}
+                <input
+                    v-bind="$attrs"
+                    v-bind:value="value"
+                    v-on="inputListeners"
+                >
+                </label>
+            `
+        })
+        
+        Vue.component('todo-item',{
+            props: ['content','index'],
+            template : '<li v-on:click="handleClick">{{content}}</li>',
+            methods: {
+                handleClick : function() {
+                    this.$emit('delete',this.index)
+                }
+            }
+        })
+        
+        var nav = {
+            template : `<a
+                            v-bind:href="url"
+                            class="nav-link"
+                        >
+                            <slot></slot>
+                        </a>`
+        }
+        new Vue({
+            el:"#imooc",
+            component:{
+                'navigation-link':nav
+            },
+            data:{
+                inputValue:'',
+                list:[]
+            },
+            methods:{
+                handleSubmit:function(){
+                    this.list.push(this.inputValue);
+                    this.inputValue = '';
+                },
+                handleDelete:function(index){
+                    this.list.splice(index,1);
+                }
+            }
+            
+        })
+        
     </script>
+    
 </body>
 </html>
