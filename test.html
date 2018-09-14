@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>编程题</title>
+</head>
+<body>
+    <div id="question1">1.
+        <button type="button" onclick="question1(this)">分数序列之和</button>:  <span></span>
+    </div>
+    <div id="question2">2.
+        <button type="button">每个月兔子总数为</button>: <span></span>
+    </div>
+    <div id="question3">3.
+        <button type="button" onclick="question3()">猴子第一天摘得桃子数是</button>: <span></span>
+    </div>
+    <div id="question4">4.
+        请输入两个数,交换他们的位置,例:(5,8)<input type="text" onchange="question4()"> <span></span>
+    </div>
+    <div id="question5">5.
+        请输入一个数判断它是不是一个回文数<input type="text" onchange="question5()"> <span></span>
+    </div>
+    <div id="question6">6.
+        请输入奖金: <input type="text" onchange="question6()">万  
+        提成金额为: <span></span>
+    </div>
+    <div id="question7">7.
+        <button type="button" onclick="question7()">1-20阶乘的和是</button>: <span></span>
+    </div>
+    <div id="question8">8.
+        <button type="button" onclick="question8()">所有的水仙花数是</button>: <span></span>
+    </div>
+    <div id="question9">9.
+        请输入一个不多于5位的正整数(0-99999)<input type="text" onchange="question9()">: <span></span>
+    </div>
+    <div id="question10">10.
+        <button type="button">每个类创建的个数</button>: <span></span>
+    </div>
+    <div id="question11">11.
+        请输入一个日期(yyyy-mm-dd) <input type="text" onchange="question11()">: <span></span>
+    </div>
+    <div id="question12">12.
+        请输入10个数,例:1,2,3,4,5,6,7,8,9,10 <input type="text" onchange="question12()">: <span></span>
+    </div>
+    <div id="question13">13.
+        请输入星期的首字母,若有重复请继续输入后续字母<input type="text" onchange="question13()">: <span></span>
+    </div>
+    <div id="question14">14. 
+        创建一个点,包括它的X,Y坐标,例:(3,4)<input type="text" onchange="question14()"> : <span></span>
+    </div>
+    <div id="question15">15.
+        <button type="button" onclick="question15()">甲队和乙队的比赛名单是</button>: <span></span>
+    </div>
+    <div id="question16">16.
+        请输入一个数字 <input type="text" onchange="question16()">: <span></span>
+    </div>
+    <div id="question17">
+        请输入一个1-100的数字,判断它是不是一个质数<input type="text">
+    </div>
+    <script src="./prime.js"></script>
+    <script>
+        function question1(){
+            let q1 = document.getElementById("question1");
+            let button = q1.children[0],span = q1.children[1];
+            let arr = [2,3],arr1 = [1,2],sumNum = 2/1+3/2;
+            for (let i=2;i<20;i++){
+                arr.push(arr[i-1]+arr[i-2]);
+                arr1.push(arr1[i-1]+arr1[i-2]);
+                sumNum += (arr[i-1]+arr[i-2])/(arr1[i-1]+arr1[i-2]);
+            }
+            span.innerHTML = sumNum;
+            console.log(arr,arr1,sumNum)
+        }
+
+        function question2(n){
+            // let rab = 2;
+            // for(let i=1;i<n+1;i++){
+            //     if(n % 3 == 0 && n/3 > 0){
+            //         let nums = n/3;
+                    
+            //     }else if(n>3){
+            //         rab += 2
+            //     }
+            // }
+        }
+
+        function question3(){
+            let q3 = document.getElementById("question3");
+            let button = q3.children[0],span = q3.children[1];
+            let nums = 1;
+            for(let i=0;i<10;i++){
+                nums = (nums + 1)*2;
+            }
+            span.innerHTML = nums;
+        }
+
+        function question4(){
+            let q4 = document.getElementById("question4");
+            let input = q4.children[0],span = q4.children[1];
+            let val = input.value.split(",");
+            span.innerHTML = val.reverse();
+        }
+
+        function question5(){
+            let q5 = document.getElementById("question5");
+            let input = q5.children[0],span = q5.children[1];
+            let val = input.value.split("");
+            //debugger
+            if(val.join() !== val.reverse().join()){
+                span.innerHTML = "这不是一个回文数";
+            }else{
+                span.innerHTML = "这是一个回文数" + val.reverse().join("");
+            }
+        }
+
+        function question6(){
+            let q6 = document.getElementById("question6");
+            let input = q6.children[0],span = q6.children[1];
+            let val = +input.value,price = 0;
+            switch(true){
+                case val < 10 || val == 10:
+                price = val*0.1;
+                break;
+                case val > 10 && (val < 20 || val == 20):
+                price = (val-10)*0.075 + 10*0.1;
+                break;
+                case val > 20 && (val < 40 || val == 40):
+                price = (val-20)*0.05 + 10*0.075 + 10*0.1;
+                break;
+                case val > 40 && (val < 60 || val == 60):
+                price = (val-40)*0.03 + 20*0.05 + 10*0.075 + 10*0.1;
+                break;
+                case val > 60 && (val < 100 || val == 100):
+                price = (val - 60)*0.015 + 20*0.03 + 20*0.05 + 10*0.075 + 10*0.1;
+                break;
+                case val > 100:
+                price = (val - 100)*0.01 + 40*0.015 + 20 * 0.03 + 20 * 0.05 + 10 * 0.075 + 10 * 0.1;
+                break;
+            }
+            span.innerHTML = price;
+        }
+        
+        function question7(){
+            let q7 = document.getElementById("question7");
+            let button = q7.children[0],span = q7.children[1];
+            let nums = 1;
+            var factorial = function (num){
+                let res = 1
+                for(let i=1;i<num+1;i++){
+                    res = res * i;
+                }
+                return res;
+            }
+            for (let i=2;i<21;i++){
+                nums += factorial(i);
+            }
+            span.innerHTML = nums;
+        }
+
+        function question8(){
+            let q8 = document.getElementById("question8");
+            let button = q8.children[0],span = q8.children[1];
+            let arr = [];
+            for(let i=100;i<1000;i++){
+                let g = i % 10,s = Math.floor((i % 100) / 10),b = Math.floor(i/100);
+                if(Math.pow(g,3)+Math.pow(s,3)+Math.pow(b,3) === i){
+                    arr.push(i);
+                }
+            }
+            span.innerHTML = arr.join(",");
+        }
+
+        function question9(){
+            let q9 = document.getElementById("question9");
+            let input = q9.children[0],span = q9.children[1];
+            let val = input.value,len = 0;
+            switch(val.length){
+                case 1: len = 1;break;
+                case 2: len = 2;break;
+                case 3: len = 3;break;
+                case 4: len = 4;break;
+                case 5: len = 5;break;
+                default: span.innerHTML = '你输入的什么东西?'; throw new Error("你输入的什么东西?");
+
+            }
+            span.innerHTML = '它是'+len+'位数,逆序数字为:'+val.split("").reverse().join("");
+        }
+
+        function question10(){
+
+        }
+
+        function question11(){
+            let q11 = document.getElementById("question11");
+            let input = q11.children[0],span = q11.children[1];
+            let val = input.value.split("-");
+            let y = +val[0],m = +val[1],d = +val[2],res = 0;
+            var getM = function(m,r){
+                let days = 0;
+                switch(m){
+                    case 1: days = 31;break;
+                    case 2: r?days = 29:days = 28;break;
+                    case 3: days = 31;break;
+                    case 4: days = 30;break;
+                    case 5: days = 31;break;
+                    case 6: days = 30;break;
+                    case 7: days = 31;break;
+                    case 8: days = 31;break;
+                    case 9: days = 30;break;
+                    case 10: days = 31;break;
+                    case 11: days = 30;break;
+                    case 12: days = 31;break;
+                }
+                return days;
+            }
+            if(y%4 === 0 && y%100 !== 0){//闰年
+                if(m > 1){
+                    for(let i=1;i<m;i++){
+                        res += getM(i,1); 
+                    }
+                    res += d;
+                }else{
+                    res = d;
+                }
+            }else{
+                if(m > 1){
+                    for(let i=1;i<m;i++){
+                        res += getM(i);
+                    }
+                    res += d;
+                }else{
+                    res = d;
+                }
+            }
+            span.innerHTML = '这天是这一年的第'+res+'天.';
+        }
+
+        function question12(){
+            let q12 = document.getElementById("question12");
+            let input = q12.children[0], span = q12.children[1];
+            let val = input.value.split(",");
+            span.innerHTML = val.sort(function(a,b){return a-b;});
+        }
+
+        function question13() {
+            let q13 = document.getElementById("question13");
+            let input = q13.children[0], span = q13.children[1];
+            let val = input.value,str = '';
+            let date = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            for(let i=0;i<date.length;i++){
+                if(val.length>1){
+                    if(date[i].indexOf(val) !== -1 && val !== ''){
+                        str += date[i] + "   ";
+                    }
+                }else if(val.length == 1){
+                    if(date[i].charAt(0) === val){
+                        str += date[i] + "   ";
+                    }
+                }
+                
+            }
+            span.innerHTML = str;
+        }
+
+        function question14(){
+            let q14 = document.getElementById("question14");
+            let input = q14.children[0],span = q14.children[1],button = q14.children[2];
+            let val = input.value;
+            span.innerHTML = val;
+        }
+
+        function question15(){
+            let q15 = document.getElementById("question15");
+            let button = q15.children[0],span = q15.children[1];
+            let teamA = ["a","b","c"],teamB = ["x","y","z"];
+            let res = [],noRes = ["ax","cx","cz"];
+            for(let i=0;i<teamA.length;i++){
+                for(let j=0;j<teamB.length;j++){
+                    res.push(teamA[i]+teamB[j]);
+                }
+            }
+            for(let i=0;i<noRes.length;i++){
+                if(res.indexOf(noRes[i]) !== -1){
+                    res.splice(res.indexOf(noRes[i]),1);
+                }
+            }
+            span.innerHTML = res.join(",");
+        }
+
+       
+        function $_(id) {
+            return document.getElementById(id);
+        }
+        var in_cal = false;
+        function question16() {//若想检测此题目需在服务器中运行此页面
+            if (in_cal) {
+                alert('分解过程中...请勿打搅~');
+                return;
+            }
+            in_cal = true;
+            $_('question16').children[1].innerHTML = "分解过程中，请稍候...";
+
+            var num = $_("question16").children[0].value;
+            var rst = '';
+            if (!isNaN(parseInt(num))) {
+                if(typeof(Worker)!=="undefined") {
+                    // var worker_blob = new Blob([document.getElementById("cal_worker").textContent]);  
+                    var worker = new Worker("./test.js");
+                    worker.postMessage([num, PrimesTable, []]);  
+                    worker.onmessage = function(event) {  
+                        in_cal = false;
+                        rst = event.data;
+                        if (rst == 'out_of_cal') {
+                            rst = "不是我计算不出来，是计算量太大，怕你的电脑算挂了！"
+                        }
+                        else {
+                            rst = "分解质因数结果为：" + rst.join("*")
+                        }
+                        in_cal = false;
+                        $_('question16').children[1].innerHTML = rst;
+                        return ;
+                    };  
+                }
+                else {
+                    //不支持worker
+                    rst = "你的浏览器版本太低级，无法进行Worker计算，请更新到最新版本浏览器！"
+                    in_cal = false;
+                    $_('question16').children[1].innerHTML = rst;
+                }
+            }
+            else {
+                rst = "请输入一个数字，只有数字才能进行质因数分解！";
+                in_cal = false;
+                $_('question16').children[1].innerHTML = rst;
+            }
+        }
+
+        function question17() {
+            let 
+
+            
+        }
+        
+    </script>
+</body>
+</html>
