@@ -56,8 +56,59 @@
     <div id="question16">16.
         请输入一个数字 <input type="text" onchange="question16()">: <span></span>
     </div>
-    <div id="question17">
-        请输入一个1-100的数字,判断它是不是一个质数<input type="text">
+    <div id="question17">17.
+        请输入一个1-100的数字,判断它是不是一个质数<input type="text" onchange="question17()">: <span></span>
+    </div>
+    <div id="question18">18.
+        <button type="button" onclick="question18()">随机读取7个数(1-50)</button>: <span></span>
+    </div>
+    <div id="question19">19.
+        请输入矩形长宽,例:6,8<input type="text" onchange="question19()">它的周长和面积是: <span></span>
+    </div>
+    <div id="question20">20.
+        请输入三个整数,将对其进行排序,例:2,8,5=>2,5,8 <input type="text" onchange="question20()">: <span></span>
+    </div>
+    <div id="question21">21.
+        请输入一个整数,大于7位数,获取它从右端开始4-7位<input type="text" onchange="question21()">: <span></span>
+    </div>
+    <div id="question22">22.
+        输入一个数组(每个元素用逗号分开 例:1,2,3),输出结果为:最大的与第一个元素交换,最小的与最后一个元素交换 <input type="text" onchange="question22()">: <span></span>
+    </div>
+    <div id="question23">23.
+        输入一个数组,逆序输出 <input type="text" onchange="question23()">: <span></span>
+    </div>
+    <div id="question24">24.
+        随便输些什么,会统计字母,数字,空格以及其他字符的个数<input type="text" onchange="question24()"> <span></span>
+    </div>
+    <div id="question25">25.
+        输入一个全是数字的数组,获得他们的和与平均值 <input type="text" onchange="question25()">: <span></span>
+    </div>
+    <div id="question26">26.
+        <button type="button" onclick="question26()">9*9口诀表</button>: <table></table>
+    </div>
+    <div id="question27">27.
+        <button type="button">编写接口</button>
+    </div>
+    <div id="question28">28.
+        <button type="button" onclick="question28()">第五个人的岁数是:</button>: <span></span>
+    </div>
+    <div id="question29">29.
+        输入一个数和相加他几次的次数,例:输入2,5=>2+22+222+2222+22222 <input type="text" onchange="question29()">: <span></span>
+    </div>
+    <div id="question30">30.
+        <button type="button" onclick="question30()">第10次反弹高度为</button>: <span></span>
+    </div>
+    <div id="question31">31.
+        <button type="button" onclick="question31()">该数为</button>: <span></span>
+    </div>
+    <div id="question32">32.
+        <input type="text"> <button type="button" onclick="question32()">1,11,111,1111</button>: <span></span>
+    </div>
+    <div id="question33">33.
+        输入两段字符串,例:abc,def=>abcdef<input type="text" onchange="question33()">: <span></span>
+    </div>
+    <div id="question34">34.
+        请输入一个电话号码<input type="text" onchange="question34()">: <span></span>
     </div>
     <script src="./prime.js"></script>
     <script>
@@ -338,11 +389,208 @@
         }
 
         function question17() {
-            let 
-
-            
+            let q17 = document.getElementById("question17");
+            let input = q17.children[0],span = q17.children[1],button = q17.children[2];
+            let val = +input.value;
+            var checkNum = function(num){
+                let temp = [];
+                for(let i=2;i<=Math.sqrt(num);i++){
+                    if(num%i === 0){
+                        temp.push(num);
+                        break;
+                    }
+                }
+                console.log(temp);
+                return temp;
+            }
+            if(checkNum(val).length>0 || val<3){
+                span.innerHTML = '这不是一个素数!';
+            }else{
+                span.innerHTML = '这是一个素数!';
+            };
         }
         
+        function question18(){
+            let q18 = document.getElementById("question18");
+            let button = q18.children[0],span = q18.children[1];
+            var getNum = function(){
+                return Math.floor(Math.abs(Math.random()*100-50)) + 1;
+            }
+            let num = [getNum(),getNum(),getNum(),getNum(),getNum(),getNum(),getNum()];
+            span.innerHTML = num.join(",");
+        }
+
+        function question19(){
+            let q19 = document.getElementById("question19");
+            let input = q19.children[0],span = q19.children[1];
+            let width = +input.value.split(",")[0],height = +input.value.split(",")[1];
+            span.innerHTML = "周长是:" + 2*(width + height) + " 面积是:" + width*height;
+        }
+
+        function question20(){
+            let q20 = document.getElementById("question20");
+            let input = q20.children[0],span = q20.children[1];
+            let numArr = [+input.value.split(",")[0],+input.value.split(",")[1],+input.value.split(",")[2]];
+            span.innerHTML = numArr.sort(function(a,b){return a-b;});
+        }
+
+        function question21(){
+            let q21 = document.getElementById("question21");
+            let input = q21.children[0],span = q21.children[1],button = q21.children[2];
+            let val = input.value;
+            if(typeof +val !== "number" || isNaN(+val) || val.length<7){
+                span.innerHTML = "请输入一个7位以上的整数!";
+                return false;
+            }
+            span.innerHTML = val.substring(val.length-7,val.length-3) + " 反转 " + val.substring(val.length-7,val.length-3).split("").reverse().join("");
+        }
+
+        function question22(){
+            let q22 = document.getElementById("question22");
+            let input = q22.children[0],span = q22.children[1];
+            let val = input.value.split(",");
+            let min = +val[0],max = +val[0];
+            for(let i=0;i<val.length;i++){
+                let n = +val[i];
+                if(n>max){
+                    max = n;
+                }
+                if(n<min){
+                    min = n;
+                }
+            }
+            let first = val.shift(),last = val.pop();
+            val.splice(val.indexOf(min+""),1,last);
+            val.splice(val.indexOf(max+""),1,first);
+            val.push(min);val.unshift(max);
+            span.innerHTML = val;
+        }
+
+        function question23() {
+            let q23 = document.getElementById("question23");
+            let input = q23.children[0],span = q23.children[1];
+            let val = input.value.split(",");
+            span.innerHTML = val.reverse().join(",");
+        }
+
+        function question24() {
+            let q24 = document.getElementById("question24");
+            let input = q24.children[0],span = q24.children[1];
+            let val = input.value;
+            let a = val.match(/[a-z]|[A-Z]/g).length,num = val.match(/[0-9]/g).length,space = val.match(/\s/g).length;
+            let other = val.length - a - num - space;
+            span.innerHTML = "字母:"+a+" 数字:"+num+" 空格:"+space+" 其他:"+other;
+        }
+
+        function question25() {
+            let q25 = document.getElementById("question25");
+            let input = q25.children[0],span = q25.children[1];
+            let val = input.value.split(",");
+            let len = val.length,add = 0,avg = 0;
+            for(let i=0;i<len;i++){
+                add += +val[i];
+            }
+            avg = add/len;
+            span.innerHTML = "和:"+add+" 平均值:"+avg;
+        }
+
+        function question26() {
+            let q26 = document.getElementById("question26");
+            let button = q26.children[0],table = q26.children[1];
+            let tableStr = "<thead></thead><tbody>";
+            for(let i=1;i<10;i++){
+                tableStr += '<tr>';
+                    for(let j=1;j<i+1;j++){
+                        tableStr += '<td>'+ i + "*" + j + "=" + i*j + '</td>';
+                    }
+                tableStr += '</tr>'
+            }
+            tableStr += '</tbody>'
+            table.innerHTML = tableStr;
+        }
+
+        function question27() {
+
+        }
+
+        function question28() {
+            let q28 = document.getElementById("question28");
+            let button = q28.children[0],span = q28.children[1];
+            let first = 10;
+            span.innerHTML = first + 2 + 2 + 2 + 2;
+        }
+
+        function question29() {
+            let q29 = document.getElementById("question29");
+            let input = q29.children[0],span = q29.children[1];
+            let val = input.value.split(",");
+            let str = val[0],num = 0;
+            for(let i=1;i<val[1];i++){
+                str += "+";
+                for(let j=0;j<i + 1;j++){
+                    str += val[0];
+                }
+            }
+            num = eval(str);
+            span.innerHTML = str + "=" + num;
+        }
+
+        function question30() {
+            let q30 = document.getElementById("question30");
+            let button = q30.children[0],span = q30.children[1];
+            let height = 100;
+            for(let i=0;i<11;i++){
+                height /= 2;
+            }
+            span.innerHTML = height;
+        }
+
+        function question31() {
+            let q31 = document.getElementById("question31");
+            let button = q31.children[0],span = q31.children[1];
+            for(let i=0;i<999;i++){
+                let a = Math.sqrt(i+100);
+                let b = Math.sqrt(i+100+168);
+                if((a % 1 === 0 ) && (b % 1 === 0)){
+                    span.innerHTML = i;
+                    break;
+                }
+            }
+        }
+
+        function question32() {
+            let q32 = document.getElementById("question32");
+            let input = q32.children[0],button = q32.children[1],span = q32.children[2];
+            let val = +input.value,arr = [1,11,111,1111];
+            arr.push(val);
+            arr.sort(function(a,b){return a-b;});
+            span.innerHTML = arr.join(",");
+        }
+
+        function question33() {
+            let q33 = document.getElementById("question33");
+            let input = q33.children[0],span = q33.children[1];
+            let val = input.value.split(",");
+            span.innerHTML = val[0] + val[1];
+        }
+
+        function question34() {
+            let q34 = document.getElementById("question34");
+            let input = q34.children[0],span = q34.children[1];
+            let val = input.value.split("");
+            let temp = val.map(function(a){
+                return (+a+5) % 10;
+            });
+            console.log(temp);
+            let first = temp.shift();
+            let fourth = temp.splice(2,1,first);
+            temp.push(fourth);
+            let second = temp.splice(1,1);
+            let third = temp.splice(1,1);
+            temp.splice(1,0,third,second);
+            let str = temp.join("")
+            console.log(str);
+        }
     </script>
 </body>
 </html>
