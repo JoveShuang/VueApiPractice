@@ -110,6 +110,9 @@
     <div id="question34">34.
         请输入一个电话号码<input type="text" onchange="question34()">: <span></span>
     </div>
+    <div id="question35">35.
+        <button type="button" onclick="question35()">5的阶乘</button>: <span></span>
+    </div>
     <script src="./prime.js"></script>
     <script>
         function question1(){
@@ -122,15 +125,20 @@
                 sumNum += (arr[i-1]+arr[i-2])/(arr1[i-1]+arr1[i-2]);
             }
             span.innerHTML = sumNum;
-            console.log(arr,arr1,sumNum)
+            //console.log(arr,arr1,sumNum)
         }
 
         function question2(n){
-            // let rab = 2;
+            // let rab = 2,bigRab = 0;
+            // let mon = 1;
+            // var canPush = function(month) {
+            //     for(let i=0;i<month;i++){
+
+            //     }
+            // }
             // for(let i=1;i<n+1;i++){
             //     if(n % 3 == 0 && n/3 > 0){
             //         let nums = n/3;
-                    
             //     }else if(n>3){
             //         rab += 2
             //     }
@@ -582,14 +590,38 @@
                 return (+a+5) % 10;
             });
             console.log(temp);
-            let first = temp.shift();
-            let fourth = temp.splice(2,1,first);
-            temp.push(fourth);
-            let second = temp.splice(1,1);
-            let third = temp.splice(1,1);
-            temp.splice(1,0,third,second);
-            let str = temp.join("")
-            console.log(str);
+            // Array.prototype.change = function (a,b){
+            //     let c = a;
+            //     a = b;
+            //     b = c;
+            // }
+            // temp.change(temp[0],temp[3]);
+            // temp.change(temp[1],temp[2]);
+            let t = temp[0];
+            temp[0] = temp[3];
+            temp[3] = t;
+            let tt = temp[1];
+            temp[1] = temp[2];
+            temp[2] = tt;
+            // var change = function(a,b){
+            //     let c = a;
+            //     a = b;
+            //     b = c;
+            // }
+            // change(temp[0],temp[3]);
+            // change(temp[1],temp[2]);
+            let str = temp.join("");
+            span.innerHTML = str;
+        }
+
+        function question35() {
+            let q35 = document.getElementById("question35");
+            let button = q35.children[0],span = q35.children[1];
+            let res = 1;
+            for(let i=5;i>0;i--){
+                res *= i;
+            }
+            span.innerHTML = res;
         }
     </script>
 </body>
